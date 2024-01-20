@@ -1,0 +1,168 @@
+
+notmain.elf:     format de fichier elf32-littlearm
+
+
+Déassemblage de la section .text :
+
+00200000 <_start>:
+  200000:	20001000 	andcs	r1, r0, r0
+  200004:	00200041 	eoreq	r0, r0, r1, asr #32
+  200008:	00200047 	eoreq	r0, r0, r7, asr #32
+  20000c:	00200047 	eoreq	r0, r0, r7, asr #32
+  200010:	00200047 	eoreq	r0, r0, r7, asr #32
+  200014:	00200047 	eoreq	r0, r0, r7, asr #32
+  200018:	00200047 	eoreq	r0, r0, r7, asr #32
+  20001c:	00200047 	eoreq	r0, r0, r7, asr #32
+  200020:	00200047 	eoreq	r0, r0, r7, asr #32
+  200024:	00200047 	eoreq	r0, r0, r7, asr #32
+  200028:	00200047 	eoreq	r0, r0, r7, asr #32
+  20002c:	00200047 	eoreq	r0, r0, r7, asr #32
+  200030:	00200047 	eoreq	r0, r0, r7, asr #32
+  200034:	00200047 	eoreq	r0, r0, r7, asr #32
+  200038:	00200047 	eoreq	r0, r0, r7, asr #32
+  20003c:	00200051 	eoreq	r0, r0, r1, asr r0
+
+00200040 <reset>:
+  200040:	f000 f826 	bl	200090 <notmain>
+  200044:	e7ff      	b.n	200046 <hang>
+
+00200046 <hang>:
+  200046:	e7fe      	b.n	200046 <hang>
+
+00200048 <PUT32>:
+  200048:	6001      	str	r1, [r0, #0]
+  20004a:	4770      	bx	lr
+
+0020004c <GET32>:
+  20004c:	6800      	ldr	r0, [r0, #0]
+  20004e:	4770      	bx	lr
+
+00200050 <systick_handler>:
+  200050:	b508      	push	{r3, lr}
+  200052:	480b      	ldr	r0, [pc, #44]	@ (200080 <systick_handler+0x30>)
+  200054:	f7ff fffa 	bl	20004c <GET32>
+  200058:	4a0c      	ldr	r2, [pc, #48]	@ (20008c <systick_handler+0x3c>)
+  20005a:	447a      	add	r2, pc
+  20005c:	6813      	ldr	r3, [r2, #0]
+  20005e:	1c59      	adds	r1, r3, #1
+  200060:	07db      	lsls	r3, r3, #31
+  200062:	6011      	str	r1, [r2, #0]
+  200064:	d506      	bpl.n	200074 <systick_handler+0x24>
+  200066:	f244 0181 	movw	r1, #16513	@ 0x4081
+  20006a:	4806      	ldr	r0, [pc, #24]	@ (200084 <systick_handler+0x34>)
+  20006c:	e8bd 4008 	ldmia.w	sp!, {r3, lr}
+  200070:	f7ff bfea 	b.w	200048 <PUT32>
+  200074:	4904      	ldr	r1, [pc, #16]	@ (200088 <systick_handler+0x38>)
+  200076:	4803      	ldr	r0, [pc, #12]	@ (200084 <systick_handler+0x34>)
+  200078:	e8bd 4008 	ldmia.w	sp!, {r3, lr}
+  20007c:	f7ff bfe4 	b.w	200048 <PUT32>
+  200080:	e000e010 	and	lr, r0, r0, lsl r0
+  200084:	40020418 	andmi	r0, r2, r8, lsl r4
+  200088:	40810000 	addmi	r0, r1, r0
+  20008c:	1fdfffa2 	svcne	0x00dfffa2
+
+00200090 <notmain>:
+  200090:	b510      	push	{r4, lr}
+  200092:	4826      	ldr	r0, [pc, #152]	@ (20012c <notmain+0x9c>)
+  200094:	f7ff ffda 	bl	20004c <GET32>
+  200098:	4601      	mov	r1, r0
+  20009a:	4824      	ldr	r0, [pc, #144]	@ (20012c <notmain+0x9c>)
+  20009c:	f041 0102 	orr.w	r1, r1, #2
+  2000a0:	4c23      	ldr	r4, [pc, #140]	@ (200130 <notmain+0xa0>)
+  2000a2:	f7ff ffd1 	bl	200048 <PUT32>
+  2000a6:	4823      	ldr	r0, [pc, #140]	@ (200134 <notmain+0xa4>)
+  2000a8:	f7ff ffd0 	bl	20004c <GET32>
+  2000ac:	4b22      	ldr	r3, [pc, #136]	@ (200138 <notmain+0xa8>)
+  2000ae:	4602      	mov	r2, r0
+  2000b0:	4922      	ldr	r1, [pc, #136]	@ (20013c <notmain+0xac>)
+  2000b2:	4820      	ldr	r0, [pc, #128]	@ (200134 <notmain+0xa4>)
+  2000b4:	4013      	ands	r3, r2
+  2000b6:	4319      	orrs	r1, r3
+  2000b8:	f7ff ffc6 	bl	200048 <PUT32>
+  2000bc:	4620      	mov	r0, r4
+  2000be:	f7ff ffc5 	bl	20004c <GET32>
+  2000c2:	4601      	mov	r1, r0
+  2000c4:	4620      	mov	r0, r4
+  2000c6:	f441 3180 	orr.w	r1, r1, #65536	@ 0x10000
+  2000ca:	f7ff ffbd 	bl	200048 <PUT32>
+  2000ce:	4620      	mov	r0, r4
+  2000d0:	f7ff ffbc 	bl	20004c <GET32>
+  2000d4:	0383      	lsls	r3, r0, #14
+  2000d6:	d5fa      	bpl.n	2000ce <notmain+0x3e>
+  2000d8:	4819      	ldr	r0, [pc, #100]	@ (200140 <notmain+0xb0>)
+  2000da:	4604      	mov	r4, r0
+  2000dc:	f7ff ffb6 	bl	20004c <GET32>
+  2000e0:	4601      	mov	r1, r0
+  2000e2:	4620      	mov	r0, r4
+  2000e4:	f021 0103 	bic.w	r1, r1, #3
+  2000e8:	f041 0101 	orr.w	r1, r1, #1
+  2000ec:	f7ff ffac 	bl	200048 <PUT32>
+  2000f0:	4620      	mov	r0, r4
+  2000f2:	f7ff ffab 	bl	20004c <GET32>
+  2000f6:	f3c0 0081 	ubfx	r0, r0, #2, #2
+  2000fa:	2801      	cmp	r0, #1
+  2000fc:	d1f8      	bne.n	2000f0 <notmain+0x60>
+  2000fe:	4b15      	ldr	r3, [pc, #84]	@ (200154 <notmain+0xc4>)
+  200100:	2400      	movs	r4, #0
+  200102:	2104      	movs	r1, #4
+  200104:	480f      	ldr	r0, [pc, #60]	@ (200144 <notmain+0xb4>)
+  200106:	447b      	add	r3, pc
+  200108:	601c      	str	r4, [r3, #0]
+  20010a:	f7ff ff9d 	bl	200048 <PUT32>
+  20010e:	490e      	ldr	r1, [pc, #56]	@ (200148 <notmain+0xb8>)
+  200110:	480e      	ldr	r0, [pc, #56]	@ (20014c <notmain+0xbc>)
+  200112:	f7ff ff99 	bl	200048 <PUT32>
+  200116:	490c      	ldr	r1, [pc, #48]	@ (200148 <notmain+0xb8>)
+  200118:	480d      	ldr	r0, [pc, #52]	@ (200150 <notmain+0xc0>)
+  20011a:	f7ff ff95 	bl	200048 <PUT32>
+  20011e:	2107      	movs	r1, #7
+  200120:	4808      	ldr	r0, [pc, #32]	@ (200144 <notmain+0xb4>)
+  200122:	f7ff ff91 	bl	200048 <PUT32>
+  200126:	4620      	mov	r0, r4
+  200128:	bd10      	pop	{r4, pc}
+  20012a:	bf00      	nop
+  20012c:	40023830 	andmi	r3, r2, r0, lsr r8
+  200130:	40023800 	andmi	r3, r2, r0, lsl #16
+  200134:	40020400 	andmi	r0, r2, r0, lsl #8
+  200138:	cfff3ffc 	svcgt	0x00ff3ffc
+  20013c:	10004001 	andne	r4, r0, r1
+  200140:	40023808 	andmi	r3, r2, r8, lsl #16
+  200144:	e000e010 	and	lr, r0, r0, lsl r0
+  200148:	007a11ff 	ldrshteq	r1, [sl], #-31	@ 0xffffffe1
+  20014c:	e000e014 	and	lr, r0, r4, lsl r0
+  200150:	e000e018 	and	lr, r0, r8, lsl r0
+  200154:	1fdffef6 	svcne	0x00dffef6
+
+Déassemblage de la section .bss :
+
+20000000 <tick>:
+20000000:	00000000 	andeq	r0, r0, r0
+
+Déassemblage de la section .ARM.attributes :
+
+00000000 <.ARM.attributes>:
+   0:	00002941 	andeq	r2, r0, r1, asr #18
+   4:	61656100 	cmnvs	r5, r0, lsl #2
+   8:	01006962 	tsteq	r0, r2, ror #18
+   c:	0000001f 	andeq	r0, r0, pc, lsl r0
+  10:	2d453705 	stclcs	7, cr3, [r5, #-20]	@ 0xffffffec
+  14:	0d06004d 	stceq	0, cr0, [r6, #-308]	@ 0xfffffecc
+  18:	02094d07 	andeq	r4, r9, #448	@ 0x1c0
+  1c:	01140412 	tsteq	r4, r2, lsl r4
+  20:	03170115 	tsteq	r7, #1073741829	@ 0x40000005
+  24:	021a0118 	andseq	r0, sl, #24, 2
+  28:	Address 0x28 is out of bounds.
+
+
+Déassemblage de la section .comment :
+
+00000000 <.comment>:
+   0:	3a434347 	bcc	10d0d24 <notmain+0xed0c94>
+   4:	65442820 	strbvs	r2, [r4, #-2080]	@ 0xfffff7e0
+   8:	6e616962 	vnmulvs.f16	s13, s2, s5	@ <UNPREDICTABLE>
+   c:	2e323120 	rsfcssp	f3, f2, f0
+  10:	2d302e32 	ldccs	14, cr2, [r0, #-200]!	@ 0xffffff38
+  14:	20293431 	eorcs	r3, r9, r1, lsr r4
+  18:	322e3231 	eorcc	r3, lr, #268435459	@ 0x10000003
+  1c:	Address 0x1c is out of bounds.
+

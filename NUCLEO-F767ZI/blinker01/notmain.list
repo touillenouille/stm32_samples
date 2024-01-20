@@ -1,0 +1,129 @@
+
+notmain.elf:     format de fichier elf32-littlearm
+
+
+Déassemblage de la section .text :
+
+00200000 <_start>:
+  200000:	20001000 	andcs	r1, r0, r0
+  200004:	00200041 	eoreq	r0, r0, r1, asr #32
+  200008:	00200047 	eoreq	r0, r0, r7, asr #32
+  20000c:	00200047 	eoreq	r0, r0, r7, asr #32
+  200010:	00200047 	eoreq	r0, r0, r7, asr #32
+  200014:	00200047 	eoreq	r0, r0, r7, asr #32
+  200018:	00200047 	eoreq	r0, r0, r7, asr #32
+  20001c:	00200047 	eoreq	r0, r0, r7, asr #32
+  200020:	00200047 	eoreq	r0, r0, r7, asr #32
+  200024:	00200047 	eoreq	r0, r0, r7, asr #32
+  200028:	00200047 	eoreq	r0, r0, r7, asr #32
+  20002c:	00200047 	eoreq	r0, r0, r7, asr #32
+  200030:	00200047 	eoreq	r0, r0, r7, asr #32
+  200034:	00200047 	eoreq	r0, r0, r7, asr #32
+  200038:	00200047 	eoreq	r0, r0, r7, asr #32
+  20003c:	00200047 	eoreq	r0, r0, r7, asr #32
+
+00200040 <reset>:
+  200040:	f000 f808 	bl	200054 <notmain>
+  200044:	e7ff      	b.n	200046 <hang>
+
+00200046 <hang>:
+  200046:	e7fe      	b.n	200046 <hang>
+
+00200048 <PUT32>:
+  200048:	6001      	str	r1, [r0, #0]
+  20004a:	4770      	bx	lr
+
+0020004c <GET32>:
+  20004c:	6800      	ldr	r0, [r0, #0]
+  20004e:	4770      	bx	lr
+
+00200050 <dummy>:
+  200050:	4770      	bx	lr
+	...
+
+00200054 <notmain>:
+  200054:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+  200056:	481c      	ldr	r0, [pc, #112]	@ (2000c8 <notmain+0x74>)
+  200058:	f7ff fff8 	bl	20004c <GET32>
+  20005c:	4601      	mov	r1, r0
+  20005e:	481a      	ldr	r0, [pc, #104]	@ (2000c8 <notmain+0x74>)
+  200060:	f041 0102 	orr.w	r1, r1, #2
+  200064:	4e19      	ldr	r6, [pc, #100]	@ (2000cc <notmain+0x78>)
+  200066:	f7ff ffef 	bl	200048 <PUT32>
+  20006a:	4819      	ldr	r0, [pc, #100]	@ (2000d0 <notmain+0x7c>)
+  20006c:	f7ff ffee 	bl	20004c <GET32>
+  200070:	4b18      	ldr	r3, [pc, #96]	@ (2000d4 <notmain+0x80>)
+  200072:	4919      	ldr	r1, [pc, #100]	@ (2000d8 <notmain+0x84>)
+  200074:	4003      	ands	r3, r0
+  200076:	4816      	ldr	r0, [pc, #88]	@ (2000d0 <notmain+0x7c>)
+  200078:	4d18      	ldr	r5, [pc, #96]	@ (2000dc <notmain+0x88>)
+  20007a:	4319      	orrs	r1, r3
+  20007c:	4f18      	ldr	r7, [pc, #96]	@ (2000e0 <notmain+0x8c>)
+  20007e:	f7ff ffe3 	bl	200048 <PUT32>
+  200082:	4918      	ldr	r1, [pc, #96]	@ (2000e4 <notmain+0x90>)
+  200084:	4630      	mov	r0, r6
+  200086:	2400      	movs	r4, #0
+  200088:	f7ff ffde 	bl	200048 <PUT32>
+  20008c:	4620      	mov	r0, r4
+  20008e:	3401      	adds	r4, #1
+  200090:	f7ff ffde 	bl	200050 <dummy>
+  200094:	42ac      	cmp	r4, r5
+  200096:	d1f9      	bne.n	20008c <notmain+0x38>
+  200098:	4639      	mov	r1, r7
+  20009a:	4630      	mov	r0, r6
+  20009c:	2400      	movs	r4, #0
+  20009e:	f7ff ffd3 	bl	200048 <PUT32>
+  2000a2:	4620      	mov	r0, r4
+  2000a4:	3401      	adds	r4, #1
+  2000a6:	f7ff ffd3 	bl	200050 <dummy>
+  2000aa:	42ac      	cmp	r4, r5
+  2000ac:	d1f9      	bne.n	2000a2 <notmain+0x4e>
+  2000ae:	490e      	ldr	r1, [pc, #56]	@ (2000e8 <notmain+0x94>)
+  2000b0:	4630      	mov	r0, r6
+  2000b2:	2400      	movs	r4, #0
+  2000b4:	f7ff ffc8 	bl	200048 <PUT32>
+  2000b8:	4620      	mov	r0, r4
+  2000ba:	3401      	adds	r4, #1
+  2000bc:	f7ff ffc8 	bl	200050 <dummy>
+  2000c0:	42ac      	cmp	r4, r5
+  2000c2:	d1f9      	bne.n	2000b8 <notmain+0x64>
+  2000c4:	e7dd      	b.n	200082 <notmain+0x2e>
+  2000c6:	bf00      	nop
+  2000c8:	40023830 	andmi	r3, r2, r0, lsr r8
+  2000cc:	40020418 	andmi	r0, r2, r8, lsl r4
+  2000d0:	40020400 	andmi	r0, r2, r0, lsl #8
+  2000d4:	cfff3ffc 	svcgt	0x00ff3ffc
+  2000d8:	10004001 	andne	r4, r0, r1
+  2000dc:	00061a80 	andeq	r1, r6, r0, lsl #21
+  2000e0:	40010080 	andmi	r0, r1, r0, lsl #1
+  2000e4:	40800001 	addmi	r0, r0, r1
+  2000e8:	00814000 	addeq	r4, r1, r0
+
+Déassemblage de la section .ARM.attributes :
+
+00000000 <.ARM.attributes>:
+   0:	00002941 	andeq	r2, r0, r1, asr #18
+   4:	61656100 	cmnvs	r5, r0, lsl #2
+   8:	01006962 	tsteq	r0, r2, ror #18
+   c:	0000001f 	andeq	r0, r0, pc, lsl r0
+  10:	2d453705 	stclcs	7, cr3, [r5, #-20]	@ 0xffffffec
+  14:	0d06004d 	stceq	0, cr0, [r6, #-308]	@ 0xfffffecc
+  18:	02094d07 	andeq	r4, r9, #448	@ 0x1c0
+  1c:	01140412 	tsteq	r4, r2, lsl r4
+  20:	03170115 	tsteq	r7, #1073741829	@ 0x40000005
+  24:	021a0118 	andseq	r0, sl, #24, 2
+  28:	Address 0x28 is out of bounds.
+
+
+Déassemblage de la section .comment :
+
+00000000 <.comment>:
+   0:	3a434347 	bcc	10d0d24 <notmain+0xed0cd0>
+   4:	65442820 	strbvs	r2, [r4, #-2080]	@ 0xfffff7e0
+   8:	6e616962 	vnmulvs.f16	s13, s2, s5	@ <UNPREDICTABLE>
+   c:	2e323120 	rsfcssp	f3, f2, f0
+  10:	2d302e32 	ldccs	14, cr2, [r0, #-200]!	@ 0xffffff38
+  14:	20293431 	eorcs	r3, r9, r1, lsr r4
+  18:	322e3231 	eorcc	r3, lr, #268435459	@ 0x10000003
+  1c:	Address 0x1c is out of bounds.
+

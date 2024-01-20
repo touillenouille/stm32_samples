@@ -1,0 +1,60 @@
+
+notmain.elf:     format de fichier elf32-littlearm
+
+
+Déassemblage de la section .text :
+
+08000000 <_start>:
+ 8000000:	20001000 	andcs	r1, r0, r0
+ 8000004:	08000009 	stmdaeq	r0, {r0, r3}
+
+08000008 <reset>:
+ 8000008:	480a      	ldr	r0, [pc, #40]	@ (8000034 <d2+0x6>)
+ 800000a:	490b      	ldr	r1, [pc, #44]	@ (8000038 <d2+0xa>)
+ 800000c:	6001      	str	r1, [r0, #0]
+ 800000e:	4809      	ldr	r0, [pc, #36]	@ (8000034 <d2+0x6>)
+ 8000010:	4909      	ldr	r1, [pc, #36]	@ (8000038 <d2+0xa>)
+ 8000012:	6001      	str	r1, [r0, #0]
+ 8000014:	4809      	ldr	r0, [pc, #36]	@ (800003c <d2+0xe>)
+ 8000016:	490a      	ldr	r1, [pc, #40]	@ (8000040 <d2+0x12>)
+ 8000018:	6001      	str	r1, [r0, #0]
+ 800001a:	3018      	adds	r0, #24
+ 800001c:	4909      	ldr	r1, [pc, #36]	@ (8000044 <d2+0x16>)
+ 800001e:	4a0a      	ldr	r2, [pc, #40]	@ (8000048 <d2+0x1a>)
+ 8000020:	4b0a      	ldr	r3, [pc, #40]	@ (800004c <d2+0x1e>)
+
+08000022 <top>:
+ 8000022:	6001      	str	r1, [r0, #0]
+ 8000024:	1c1c      	adds	r4, r3, #0
+
+08000026 <d1>:
+ 8000026:	3c01      	subs	r4, #1
+ 8000028:	d1fd      	bne.n	8000026 <d1>
+ 800002a:	6002      	str	r2, [r0, #0]
+ 800002c:	1c1c      	adds	r4, r3, #0
+
+0800002e <d2>:
+ 800002e:	3c01      	subs	r4, #1
+ 8000030:	d1fd      	bne.n	800002e <d2>
+ 8000032:	e7f6      	b.n	8000022 <top>
+ 8000034:	40023830 	andmi	r3, r2, r0, lsr r8
+ 8000038:	00100002 	andseq	r0, r0, r2
+ 800003c:	40020400 	andmi	r0, r2, r0, lsl #8
+ 8000040:	10004281 	andne	r4, r0, r1, lsl #5
+ 8000044:	00004081 	andeq	r4, r0, r1, lsl #1
+ 8000048:	40810000 	addmi	r0, r1, r0
+ 800004c:	00300000 	eorseq	r0, r0, r0
+
+Déassemblage de la section .ARM.attributes :
+
+00000000 <.ARM.attributes>:
+   0:	00002041 	andeq	r2, r0, r1, asr #32
+   4:	61656100 	cmnvs	r5, r0, lsl #2
+   8:	01006962 	tsteq	r0, r2, ror #18
+   c:	00000016 	andeq	r0, r0, r6, lsl r0
+  10:	726f4305 	rsbvc	r4, pc, #335544320	@ 0x14000000
+  14:	2d786574 	cfldr64cs	mvdx6, [r8, #-464]!	@ 0xfffffe30
+  18:	0600304d 	streq	r3, [r0], -sp, asr #32
+  1c:	094d070c 	stmdbeq	sp, {r2, r3, r8, r9, sl}^
+  20:	Address 0x20 is out of bounds.
+

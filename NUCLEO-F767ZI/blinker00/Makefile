@@ -3,7 +3,8 @@
 ARMGNU ?= arm-linux-gnueabi
 
 AOPS = --warn --fatal-warnings
-LOPS = -nostdlib -nostartfiles
+LOPS = -nostdlib
+#LOPS = -nostdlib -nostartfiles
 
 all : notmain.bin
 

@@ -7,7 +7,8 @@ XCPU = -mcpu=cortex-m7
 
 AOPS = --warn --fatal-warnings $(XCPU)
 COPS = -Wall -O2 -ffreestanding $(XCPU)
-LOPS = -nostdlib -nostartfiles
+LOPS = -nostdlib
+#LOPS = -nostdlib -nostartfiles
 
 all : notmain.bin
 
